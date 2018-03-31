@@ -120,17 +120,42 @@ class Game(Frame):
 
         # creates the rooms
         def createRooms(self):
-                pass
+                #create room objects
+                exercise = Room("Exercise Room", None)
+                foyer = Room("Foyer", "room1.gif")
+                garage = Room("Garage", None)
+                kitchen = Room("Kitchen", None)
+                living = Room("Living Room", None)
+                laundry = Room("Launcdry Room", None)
+                guest = Room("Guest Bedroom", None)
+                bed = Room("Bedroom", None)
+                bath = Room("Bathroom", None)
+                secret = Room("Secret Room", None)
+
+                #create room exits
+
+
+                #create room items
+
+
+                #create room grabbables
+
+                #set foyer as current room at beginning of the game
+                Game.currentRoom = foyer
+
+                #initialize inventory
+                Game.inventory = []
+        
         # sets up the GUI
         def setupGUI(self):
                 #organize the GUI
-                self.pack(fill=BOTH, exapand=1)
+                self.pack(fill=BOTH, expand=1)
 
                 #setup input box (Tkinter Entry)
                 #binds return key to the process function
                 #fills bottom row of GUI, is focused automatically
                 Game.player_input = Entry(self, bg="white")
-                Game.player_input.bind(",Return.", self.process)
+                Game.player_input.bind("<Return>", self.process)
                 Game.player_input.pack(side=BOTTOM, fill=X)
                 Game.player_input.focus()
 
@@ -176,10 +201,12 @@ class Game(Frame):
                         Game.text.insert(END, "You are dead. The only thing you can do now is quit.\n")
                 else:
                         #otherwise, display status
-                        Game.text.insert(END, str(Game.currentRoom) + "\n
+                        Game.text.insert(END, str(Game.currentRoom) + "\nYou are carrying: " + str(Game.inventory) + "\n\n" + status)
+                        Game.text.config(state=DISABLED)
+
         # plays the game
         def play(self):
-                # add the rooms to the game
+        # add the rooms to the game
                 self.createRooms()
                 # configure the GUI
                 self.setupGUI()
@@ -190,7 +217,78 @@ class Game(Frame):
 
         # processes the player's input
         def process(self, event):
-                pass
+                #grab player input from input field
+                action = Game.player_input.get()
+                #set user input to lower case
+                action = action.lower()
+                #set default response
+                response = "I don't understand. Try [verb][noun]. Valid verbs are go, look, and take."
+
+                #exit game if player wants to quit (quit actions are "quit" or "exit"
+                if (action == "quit" or action == "exit"):
+                        exit(0)
+
+                #if player is dead
+                if (Game.currentRoom == None):
+                        #clear player input
+                        Game.player_input.delete(0, END)
+                        return
+
+                #split user input into words
+                words = action.split()
+
+                #the game only understands two word inputs
+                if (len(words) == 2):
+                        #isolate verb and noun
+                        verb = words[0]
+                        noun = words[1]
+
+                        #if verb is go
+                        if (verb == "go"):
+                                #set default response
+                                response = "Invalid exit."
+
+                                #check for valid exits in current room
+                                if (noun in Game.currentRoom.exits):
+                                        #if room found, change currentRoom to specified room
+                                        Game.cuurrentRoom =  Game.currentRoom.exits[noun]
+                                        #set response if successful
+                                        response = "Room changed."
+
+                        #if verb is look
+                        elif(verb == "look"):
+                                #set default response
+                                response = "I don't see that item."
+
+                                #check for valid items in current room
+                                if (noun in Game.currentRoom.items):
+                                        #if found, set response to item description
+                                        response = Game.currentRoom.items[noun]
+
+                        #if verb is take
+                        elif(verb == "take"):
+                                #set a default response
+                                response = "I don't see that item."
+
+                                #check for valid grabbables in room
+                                for grabbable in Game.currentRoom.grabbables:
+                                        #if valid grabbable is found
+                                        if (noun == grabbable):
+                                                #add grabbable item to players inventory
+                                                Game.inventory.append(grabbable)
+                                                #remove grabbable from room
+                                                Game.currentRoom.delGrabbable(grabbable)
+                                                #set response if successful
+                                                response = "Item grabbed."
+                                                #no need to check for more grabbables
+                                                break
+                        #display response on right of GUI
+                        #display room image on left of GUI
+                        #clear input
+                        self.setStatus(response)
+                        self.setRoomImage()
+                        Game.player_input.delete(0, END)
+                
 ###FUNCTIONS################################################################################
 
 ###MAIN#####################################################################################
