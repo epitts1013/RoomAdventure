@@ -113,6 +113,50 @@ class Room(object):
 
 # the event class
 # serves as a template for [use] events
+class Event(object):
+        #Constructor
+        def __init__(self, location, trigger):
+              self.location = location #the room the event occurs in
+              self.trigger = trigger #item used to trigger event
+              self.dObject = dObject #item in room that trigger is used on
+              self.effect = ""
+
+        #accessors and mutators
+        #location
+        @property
+        def location(self):
+                return self._location
+
+        @location.setter
+        def location(self, val):
+                self._location = val
+
+        #triggerItem
+        @property
+        def trigger(self):
+                return self._trigger
+
+        @trigger.setter
+        def trigger(self, val):
+                self._trigger = val
+
+        #dObject
+        @property
+        def dObject(self):
+                return self._dObject
+
+        @dObject.setter
+        def dObject(self, val):
+                self._dObject = val
+
+        #effect
+        @property
+        def effect(self):
+                return self._effect
+
+        @effect.setter
+        def effect(self, val):
+                self._effect = val
 
 # the game class
 # inherits from the Frame class of Tkinter
