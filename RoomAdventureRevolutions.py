@@ -8,6 +8,7 @@ from Tkinter import *
 
 ###CLASSES#################################################################################
 # the room class
+# serves as template for individual rooms
 class Room(object):
         #Constructor
         def __init__(self, name, image):
@@ -110,8 +111,12 @@ class Room(object):
 
                 return s
 
+# the event class
+# serves as a template for [use] events
+
 # the game class
 # inherits from the Frame class of Tkinter
+# sets up game and GUI
 class Game(Frame):
         #Constructor
         def __init__(self, parent):
