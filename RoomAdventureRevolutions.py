@@ -68,7 +68,7 @@ class Room(object):
                 self._grabbables = value
 
         # adds an exit to the room
-        # the exit is a string (e.g., north)
+        # the exit is a string (e.g., "north")
         # the room is an instance of a room
         def addExit(self, exit, room):
                 # append the exit and room to the appropriate dictionary
@@ -170,19 +170,46 @@ class Game(Frame):
         # creates the rooms
         def createRooms(self):
                 #create room objects
-                exercise = Room("Exercise Room", None)
+                exercise = Room("Exercise Room", "room2.gif")
                 foyer = Room("Foyer", "room1.gif")
                 garage = Room("Garage", None)
-                kitchen = Room("Kitchen", None)
-                living = Room("Living Room", None)
-                laundry = Room("Launcdry Room", None)
+                kitchen = Room("Kitchen", "room4.gif")
+                living = Room("Living Room", "room3.gif")
+                laundry = Room("Laundry Room", None)
                 guest = Room("Guest Bedroom", None)
                 bed = Room("Bedroom", None)
                 bath = Room("Bathroom", None)
                 secret = Room("Secret Room", None)
 
                 #create room exits
+                exercise.addExit("north", kitchen)
+                exercise.addExit("east", foyer)
 
+                foyer.addExit("north", living)
+                foyer.addExit("west", exercise)
+
+                garage.addExit("north", laundry)
+
+                kitchen.addExit("north", guest)
+                kitchen.addExit("east", living)
+                kitchen.addExit("south", exercise)
+
+                living.addExit("north", bed)
+                living.addExit("east", laundry)
+                living.addExit("south", foyer)
+                living.addExit("west", kitchen)
+
+                laundry.addExit("north", bath)
+                laundry.addExit("south", garage)
+                laundry.addExit("west", living)
+
+                guest.addExit("south", kitchen)
+
+                bed.addExit("south", living)
+                bed.addExit("east", bath)
+
+                bath.addExit("south", laundry)
+                bath.addExit("west", bed)
 
                 #create room items
 
@@ -300,7 +327,7 @@ class Game(Frame):
                                 #check for valid exits in current room
                                 if (noun in Game.currentRoom.exits):
                                         #if room found, change currentRoom to specified room
-                                        Game.cuurrentRoom =  Game.currentRoom.exits[noun]
+                                        Game.currentRoom =  Game.currentRoom.exits[noun]
                                         #set response if successful
                                         response = "Room changed."
 
