@@ -131,7 +131,7 @@ class Game(Frame):
                 garage = Room("Garage", None)
                 kitchen = Room("Kitchen", "room4.gif")
                 living = Room("Living Room", "room3.gif")
-                laundry = Room("Launcdry Room", None)
+                laundry = Room("Laundry Room", None)
                 guest = Room("Guest Bedroom", None)
                 bed = Room("Bedroom", None)
                 bath = Room("Bathroom", None)
@@ -283,7 +283,7 @@ class Game(Frame):
                                 #check for valid exits in current room
                                 if (noun in Game.currentRoom.exits):
                                         #if room found, change currentRoom to specified room
-                                        Game.cuurrentRoom =  Game.currentRoom.exits[noun]
+                                        Game.currentRoom =  Game.currentRoom.exits[noun]
                                         #set response if successful
                                         response = "Room changed."
 
