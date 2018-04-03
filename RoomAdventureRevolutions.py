@@ -179,10 +179,27 @@ class Game(Frame):
                 foyer.addItem("door-mat", "It's covered in dirt, I suppose that is its purpose.")
                 foyer.addItem("door", "It's where you came in from, but you shouldn't leave yet.")
 
+                garage.addItem("car", "It's a Dodge Charger.")
+                garage.addItem("truck", "It's a Dodge Ram.")
+                garage.addItem("work-bench", "It has several tools on it, like hammers and wrenches.")
+                garage.addItem("breaker-box", "Contains several switches for controlling the power.")
+                garage.addItem("garage-door", "It seems to be locked tight, not getting out this way.")
+
+                kitchen.addItem("table", "A dining table, with several dishes on it. A ham rests on top of it.")
+                kitchen.addItem("ham", "A smoked ham. A knife rests next to it, perhaps you could cut off a piece.")
+                kitchen.addItem("fridge", "A refrigerator full of boring foods.")
+                kitchen.addItem("oven", "An electric oven, looks like it has been recently used.")
+                kitchen.addItem("stove", "An electric stove.")
+
+                living.addItem("sofa", "A comfy sofa, it sits in front of the fireplace.")
+
                 #create room grabbables
                 exercise.addGrabbable("boxing-gloves")
                 exercise.addGrabbable("dumbell")
                 exercise.addGrabbable("gatorade")
+
+                garage.addGrabbable("hammer")
+                garage.addGrabbable("wrench")
 
                 #set foyer as current room at beginning of the game
                 Game.currentRoom = foyer
