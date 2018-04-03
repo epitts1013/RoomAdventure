@@ -192,6 +192,16 @@ class Game(Frame):
                 kitchen.addItem("stove", "An electric stove.")
 
                 living.addItem("sofa", "A comfy sofa, it sits in front of the fireplace.")
+                living.addItem("fireplace", "A fire burns, it casts a warm glow across the room.")
+                living.addItem("television", "A 32\" flatscreen. A remote rests in front of it.")
+                living.addItem("recliner", "A La-Z-Boy recliner, looks comfortable.")
+                living.addItem("floor-rug", "Covers a large portion of the floor, but I don't care for the color.")
+                living.addItem("dvd-rack", "Has a wide array of movies, one dvd looks more important though.")
+
+                laundry.addItem("washing-machine", "A front loading washing machine with a clear window. Its fun to watch these things sometimes.")
+                laundry.addItem("dryer", "Used for drying clothes. Loud. Less fun to watch than a washing machine.")
+                laundry.addItem("laundry-basket", "Could be used to hold clothes, but the clothes are in the washer already.")
+                laundry.addItem("shelf", "Shelves many items, such as laundry detergent.")
 
                 #create room grabbables
                 exercise.addGrabbable("boxing-gloves")
@@ -200,6 +210,13 @@ class Game(Frame):
 
                 garage.addGrabbable("hammer")
                 garage.addGrabbable("wrench")
+
+                kitchen.addGrabbable("knife")
+
+                living.addGrabbable("remote")
+                living.addGrabbable("dvd")
+
+                laundry.addGrabbable("detergent")
 
                 #set foyer as current room at beginning of the game
                 Game.currentRoom = foyer
