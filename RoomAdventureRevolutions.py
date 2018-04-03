@@ -126,16 +126,16 @@ class Game(Frame):
         # creates the rooms
         def createRooms(self):
                 #create room objects
-                exercise = Room("Exercise Room", "room2.gif")
-                foyer = Room("Foyer", "room1.gif")
-                garage = Room("Garage", None)
-                kitchen = Room("Kitchen", "room4.gif")
-                living = Room("Living Room", "room3.gif")
-                laundry = Room("Laundry Room", None)
-                guest = Room("Guest Bedroom", None)
-                bed = Room("Bedroom", None)
-                bath = Room("Bathroom", None)
-                secret = Room("Secret Room", None)
+                exercise = Room("Exercise Room", "exercise.gif")
+                foyer = Room("Foyer", "foyer.gif")
+                garage = Room("Garage", "garage.gif")
+                kitchen = Room("Kitchen", "kitchen.gif")
+                living = Room("Living Room", "living.gif")
+                laundry = Room("Laundry Room", "laundry.gif")
+                guest = Room("Guest Bedroom", "guest.gif")
+                bed = Room("Bedroom", "bed.gif")
+                bath = Room("Bathroom", "bath.gif")
+                secret = Room("Secret Room", "secret.gif")
 
                 #create room exits
                 exercise.addExit("north", kitchen)
