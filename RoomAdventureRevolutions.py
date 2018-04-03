@@ -201,7 +201,23 @@ class Game(Frame):
                 laundry.addItem("washing-machine", "A front loading washing machine with a clear window. Its fun to watch these things sometimes.")
                 laundry.addItem("dryer", "Used for drying clothes. Loud. Less fun to watch than a washing machine.")
                 laundry.addItem("laundry-basket", "Could be used to hold clothes, but the clothes are in the washer already.")
-                laundry.addItem("shelf", "Shelves many items, such as laundry detergent.")
+                laundry.addItem("shelf", "Shelves many items, such as detergent.")
+
+                guest.addItem("bed", "A comfy looking double bed with two pillows.")
+                guest.addItem("dresser", "A dresser with clothes in it and a mirror on top.")
+                guest.addItem("coat-rack", "A lone jacket rests on it, a key sits in the pocket.")
+                guest.addItem("tv", "A small box television, nothing fancy.")
+
+                bed.addItem("bed", "A bed in the bedroom, who would have guessed?")
+                bed.addItem("wardrobe", "Full of clothes.")
+                bed.addItem("ceiling-fan", "Large, spinning, wooden blades for moving the air around.")
+                bed.addItem("desk", "Contains papers and writing utinsils. On the top rests a laptop, but the battery is dead.")
+                bed.addItem("safe", "A locked safe.")
+                bed.addItem("night-stand", "A lamp rests on top, in the drawer is a battery.")
+
+                bath.addItem("toilet", "An uninspired, white, porcelain bowl full of water and [expletive].")
+                bath.addItem("shower", "A shower sounds nice, but God only knows how to operate this thing.")
+                bath.addItem("sink", "It seems to be clogged.")
 
                 #create room grabbables
                 exercise.addGrabbable("boxing-gloves")
@@ -217,6 +233,10 @@ class Game(Frame):
                 living.addGrabbable("dvd")
 
                 laundry.addGrabbable("detergent")
+
+                guest.addGrabbable("key")
+
+                bed.addGrabbable("battery")
 
                 #set foyer as current room at beginning of the game
                 Game.currentRoom = foyer
