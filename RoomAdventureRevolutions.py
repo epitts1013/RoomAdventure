@@ -168,9 +168,21 @@ class Game(Frame):
                 bath.addExit("west", bed)
 
                 #create room items
+                exercise.addItem("weight-rack", "A rack with several dumbells of various weights placed on it.")
+                exercise.addItem("treadmill", "A ten speed treadmill with incline controls.")
+                exercise.addItem("elliptical", "Simulates walking up stairs without the high impact.")
+                exercise.addItem("punching-bag", "For when you need to let all that anger out. A few pairs of boxing gloves sit next to it.")
+                exercise.addItem("mini-fridge", "It's full of Gatorade.")
+                exercise.addItem("scale", "For weighing yourself after exercise, not that there is any immediate effect. I wonder how much the dumbells weigh?")
 
+                foyer.addItem("rug", "It's fairly plush under your feet.")
+                foyer.addItem("door-mat", "It's covered in dirt, I suppose that is its purpose.")
+                foyer.addItem("door", "It's where you came in from, but you shouldn't leave yet.")
 
                 #create room grabbables
+                exercise.addGrabbable("boxing-gloves")
+                exercise.addGrabbable("dumbell")
+                exercise.addGrabbable("gatorade")
 
                 #set foyer as current room at beginning of the game
                 Game.currentRoom = foyer
