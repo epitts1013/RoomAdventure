@@ -113,13 +113,14 @@ class Room(object):
 
 # the event class
 # serves as a template for [use] events
+# accepts the room, trigger item, item trigger is used on, and a string that will be executed when the event is called
 class Event(object):
         #Constructor
-        def __init__(self, location, trigger):
+        def __init__(self, location, trigger, dObject, effect):
               self.location = location #the room the event occurs in
               self.trigger = trigger #item used to trigger event
               self.dObject = dObject #item in room that trigger is used on
-              self.effect = ""
+              self.effect = effect #effect of the action written as a string
 
         #accessors and mutators
         #location
@@ -170,6 +171,7 @@ class Game(Frame):
         # creates the rooms
         def createRooms(self):
                 #create room objects
+                front = Room("Front Yard", "front.gif")
                 exercise = Room("Exercise Room", "exercise.gif")
                 foyer = Room("Foyer", "foyer.gif")
                 garage = Room("Garage", "garage.gif")
