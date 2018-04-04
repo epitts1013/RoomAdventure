@@ -20,6 +20,7 @@ class Room(object):
                 self.exits ={}
                 self.items = {}
                 self.grabbables = []
+                self.events = []
 
         #Accessors and Mutators
         #name
@@ -67,6 +68,15 @@ class Room(object):
         def grabbables(self, value):
                 self._grabbables = value
 
+        #events
+        @property
+        def events(self):
+                return self._events
+
+        @events.setter
+        def events(self, val):
+                self._events = val
+
         # adds an exit to the room
         # the exit is a string (e.g., "north")
         # the room is an instance of a room
@@ -93,6 +103,9 @@ class Room(object):
                 # remove the item from the list
                 self._grabbables.remove(item)
 
+        def addEvent(self, trigger, dObject, effect):
+                self.events.append(Event(trigger, dObject, effect))
+
         # returns a string description of the room
         def __str__(self):
                 # first, the room name
@@ -113,6 +126,50 @@ class Room(object):
 
 # the event class
 # serves as a template for [use] events
+# accepts trigger item, item trigger is used on, and a string that will be executed when the event is called
+class Event(object):
+        #Constructor
+        def __init__(self, trigger, dObject, effect):
+              self.trigger = trigger #item used to trigger event
+              self.dObject = dObject #item in room that trigger is used on
+              self.effect = effect #effects of the action input as a list of strings
+
+        #accessors and mutators
+        #location
+        @property
+        def location(self):
+                return self._location
+
+        @location.setter
+        def location(self, val):
+                self._location = val
+
+        #triggerItem
+        @property
+        def trigger(self):
+                return self._trigger
+
+        @trigger.setter
+        def trigger(self, val):
+                self._trigger = val
+
+        #dObject
+        @property
+        def dObject(self):
+                return self._dObject
+
+        @dObject.setter
+        def dObject(self, val):
+                self._dObject = val
+
+        #effect
+        @property
+        def effect(self):
+                return self._effect
+
+        @effect.setter
+        def effect(self, val):
+                self._effect = val
 
 # the game class
 # inherits from the Frame class of Tkinter
@@ -126,6 +183,7 @@ class Game(Frame):
         # creates the rooms
         def createRooms(self):
                 #create room objects
+                front = Room("Front Yard", "front.gif")
                 exercise = Room("Exercise Room", "exercise.gif")
                 foyer = Room("Foyer", "foyer.gif")
                 garage = Room("Garage", "garage.gif")
@@ -136,6 +194,20 @@ class Game(Frame):
                 bed = Room("Bedroom", "bed.gif")
                 bath = Room("Bathroom", "bath.gif")
                 secret = Room("Secret Room", "secret.gif")
+
+                #rooms are added to a list for access by events
+                Game.rooms = []
+                Game.rooms.append(front) #index 0
+                Game.rooms.append(exercise) #index 1
+                Game.rooms.append(foyer) #index 2
+                Game.rooms.append(garage) #index 3
+                Game.rooms.append(kitchen) #index 4
+                Game.rooms.append(living) #index 5
+                Game.rooms.append(laundry) #index 6
+                Game.rooms.append(guest) #index 7
+                Game.rooms.append(bed) #index 8
+                Game.rooms.append(bath) #index 9
+                Game.rooms.append(secret) #index 10
 
                 #create room exits
                 exercise.addExit("north", kitchen)
@@ -168,6 +240,12 @@ class Game(Frame):
                 bath.addExit("west", bed)
 
                 #create room items
+                front.addItem("door-mat", "Lifting it up reveals a key")
+                front.addItem("door", "The front door. It can't be opened.")
+                front.addItem("tutorial", "This game makes use of 4 action verbs: go, look, take, and use.\nFor go, look, and take, use the format [verb][noun].\
+                                                \n For \"use\" use the format [use][object to be used][object you are acting on].\
+                                                \nFor example \"use key door\". Items being used must be in player inventory.")
+                
                 exercise.addItem("weight-rack", "A rack with several dumbells of various weights placed on it.")
                 exercise.addItem("treadmill", "A ten speed treadmill with incline controls.")
                 exercise.addItem("elliptical", "Simulates walking up stairs without the high impact.")
@@ -179,7 +257,7 @@ class Game(Frame):
                 foyer.addItem("door-mat", "It's covered in dirt, I suppose that is its purpose.")
                 foyer.addItem("door", "It's where you came in from, but you shouldn't leave yet.")
 
-                garage.addItem("car", "It's a Dodge Charger.")
+                garage.addItem("car", "It's a Dodge Charger. You see a key though the window.")
                 garage.addItem("truck", "It's a Dodge Ram.")
                 garage.addItem("work-bench", "It has several tools on it, like hammers and wrenches.")
                 garage.addItem("breaker-box", "Contains several switches for controlling the power.")
@@ -196,7 +274,8 @@ class Game(Frame):
                 living.addItem("television", "A 32\" flatscreen. A remote rests in front of it.")
                 living.addItem("recliner", "A La-Z-Boy recliner, looks comfortable.")
                 living.addItem("floor-rug", "Covers a large portion of the floor, but I don't care for the color.")
-                living.addItem("dvd-rack", "Has a wide array of movies, one dvd looks more important though.")
+                living.addItem("dvd-rack", "Has a wide array of movies.")
+                living.addItem("hatch", "A hatch is on the ceiling, it has seven keyholes.")
 
                 laundry.addItem("washing-machine", "A front loading washing machine with a clear window. Its fun to watch these things sometimes.")
                 laundry.addItem("dryer", "Used for drying clothes. Loud. Less fun to watch than a washing machine.")
@@ -219,7 +298,11 @@ class Game(Frame):
                 bath.addItem("shower", "A shower sounds nice, but God only knows how to operate this thing.")
                 bath.addItem("sink", "It seems to be clogged.")
 
+                secret.addItem("a-beautiful-view", "A breathtaking view of the night sky, a fitting reward for you hard work. The only thing left is to exit the game.")
+
                 #create room grabbables
+                front.addGrabbable("key")
+                
                 exercise.addGrabbable("boxing-gloves")
                 exercise.addGrabbable("dumbell")
                 exercise.addGrabbable("gatorade")
@@ -230,7 +313,6 @@ class Game(Frame):
                 kitchen.addGrabbable("knife")
 
                 living.addGrabbable("remote")
-                living.addGrabbable("dvd")
 
                 laundry.addGrabbable("detergent")
 
@@ -238,8 +320,39 @@ class Game(Frame):
 
                 bed.addGrabbable("battery")
 
-                #set foyer as current room at beginning of the game
-                Game.currentRoom = foyer
+                #create room events
+                front.addEvent("key", "door", ["Game.rooms[0].addExit(\"north\", Game.rooms[2])", "Game.rooms[0].items[\"door\"] = \"The front door\"",\
+                                               "Game.inventory.remove(\"key\")", "response = \"The door unlocks\""])
+
+                exercise.addEvent("dumbell", "scale", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"dumbell\")",\
+                                                       "response = \"Placing the dumbell on the scale opened up a compartment on the scale revealing a key. You take the key.\""])
+
+                garage.addEvent("hammer", "car", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"hammer\")",\
+                                                  "response = \"You use the hammer to smash in the window and take the key. You discard the hammer.\"",\
+                                                  "Game.rooms[3].items[\"car\"] = \"A Dodge Charger with a broken window\""])
+
+                kitchen.addEvent("knife", "ham", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"knife\")",\
+                                                  "response = \"You use the to cut into the ham, but find a key inside it. You discard the knife.\"",\
+                                                  "Game.rooms[4].items[\"ham\"] = \"A smoked ham that has been cut into.\""])
+
+                laundry.addEvent("detergent", "washing-machine", ["Game.inventory.append(\"wet-clothes\")", "Game.inventory.remove(\"detergent\")",\
+                                                                  "response = \"You wash the clothes, but now you have a bunch of wet clothes. You discard the detergent.\""])
+                laundry.addEvent("wet-clothes", "dryer", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"wet-clothes\")",\
+                                                          "response = \"You dry the wet clothes, and inside the laundry you find a key.\""])
+
+                bed.addEvent("battery", "laptop", ["Game.inventory.append(\"combination\")", "Game.inventory.remove(\"battery\")",\
+                                                   "response = \"You could have just as easily have charged the battery, but okay. On the computer you see a combination.\"",\
+                                                   "Game.rooms[8].items[\"desk\"] = \"Contains papers and writing utinsils. On the top rests a laptop.\""])
+                bed.addEvent("combination", "safe", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"combination\")",\
+                                                   "response = \"You open the safe with the combination from the computer. Inside you find a key.\"",\
+                                                   "Game.rooms[8].items[\"safe\"] = \"An unlocked safe\""])
+
+                bath.addEvent("wrench", "sink", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"wrench\")",\
+                                                   "response = \"You use the wrench to open the pipes, and inside you find a key. You discard the wrench.\"",\
+                                                   "Game.rooms[9].items[\"sink\"] = \"An unclogged sink.\""])
+
+                #set front as current room at beginning of the game
+                Game.currentRoom = front
 
                 #initialize inventory
                 Game.inventory = []
@@ -320,7 +433,7 @@ class Game(Frame):
                 #set user input to lower case
                 action = action.lower()
                 #set default response
-                response = "I don't understand. Try [verb][noun]. Valid verbs are go, look, and take."
+                response = "I don't understand. Try [verb][noun] for verbs go, look, and take. Try [verb][item to use][item to be used on] for use."
 
                 #exit game if player wants to quit (quit actions are "quit" or "exit"
                 if (action == "quit" or action == "exit"):
@@ -349,7 +462,7 @@ class Game(Frame):
                                 #check for valid exits in current room
                                 if (noun in Game.currentRoom.exits):
                                         #if room found, change currentRoom to specified room
-                                        Game.currentRoom =  Game.currentRoom.exits[noun]
+                                        Game.currentRoom = Game.currentRoom.exits[noun]
                                         #set response if successful
                                         response = "Room changed."
 
@@ -380,6 +493,50 @@ class Game(Frame):
                                                 response = "Item grabbed."
                                                 #no need to check for more grabbables
                                                 break
+                        
+                        #display response on right of GUI
+                        #display room image on left of GUI
+                        #clear input
+                        self.setStatus(response)
+                        self.setRoomImage()
+                        Game.player_input.delete(0, END)
+
+                elif (len(words) == 3):
+                        #check for correct usage
+                        verb = words[0]
+
+                        if (verb == "use"):
+                                #if [use] is verb, proceed
+                                trigger = words[1]
+                                dObject = words[2]
+                                
+                                #set default response
+                                response = "Can only use items in inventory."
+                                
+                                #checks for using all keys on living room hatch
+                                if ((Game.currentRoom == Game.rooms[5]) and (trigger == "key" or trigger == "keys") and (dObject == "hatch")):
+                                        keyCount = 0
+                                        #checks all items in inventory
+                                        for item in Game.inventory:
+                                                if item == "key":
+                                                        #totals up number of keys
+                                                        keyCount += 1
+                                        #if you have all the keys, opens the hatch, otherwise nothing happens
+                                        if keyCount == 7:
+                                                Game.rooms[5].addExit("hatch", Game.rooms[10])
+                                                response = "Using all seven keys, you open the hatch."
+                                        else:
+                                                response =  "You lack the required number of keys."
+                        
+                                elif (trigger in Game.inventory):
+                                        #set default response
+                                        response = "Can't use that item that way."
+
+                                        for event in Game.currentRoom.events:
+                                                if ((trigger == event.trigger) and (dObject == event.dObject)):
+                                                        for string in event.effect:
+                                                                exec(string)
+
                         #display response on right of GUI
                         #display room image on left of GUI
                         #clear input
