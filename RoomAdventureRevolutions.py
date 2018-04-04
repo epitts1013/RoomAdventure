@@ -170,16 +170,16 @@ class Game(Frame):
         # creates the rooms
         def createRooms(self):
                 #create room objects
-                exercise = Room("Exercise Room", "room2.gif")
-                foyer = Room("Foyer", "room1.gif")
-                garage = Room("Garage", None)
-                kitchen = Room("Kitchen", "room4.gif")
-                living = Room("Living Room", "room3.gif")
-                laundry = Room("Laundry Room", None)
-                guest = Room("Guest Bedroom", None)
-                bed = Room("Bedroom", None)
-                bath = Room("Bathroom", None)
-                secret = Room("Secret Room", None)
+                exercise = Room("Exercise Room", "exercise.gif")
+                foyer = Room("Foyer", "foyer.gif")
+                garage = Room("Garage", "garage.gif")
+                kitchen = Room("Kitchen", "kitchen.gif")
+                living = Room("Living Room", "living.gif")
+                laundry = Room("Laundry Room", "laundry.gif")
+                guest = Room("Guest Bedroom", "guest.gif")
+                bed = Room("Bedroom", "bed.gif")
+                bath = Room("Bathroom", "bath.gif")
+                secret = Room("Secret Room", "secret.gif")
 
                 #create room exits
                 exercise.addExit("north", kitchen)
@@ -212,9 +212,75 @@ class Game(Frame):
                 bath.addExit("west", bed)
 
                 #create room items
+                exercise.addItem("weight-rack", "A rack with several dumbells of various weights placed on it.")
+                exercise.addItem("treadmill", "A ten speed treadmill with incline controls.")
+                exercise.addItem("elliptical", "Simulates walking up stairs without the high impact.")
+                exercise.addItem("punching-bag", "For when you need to let all that anger out. A few pairs of boxing gloves sit next to it.")
+                exercise.addItem("mini-fridge", "It's full of Gatorade.")
+                exercise.addItem("scale", "For weighing yourself after exercise, not that there is any immediate effect. I wonder how much the dumbells weigh?")
 
+                foyer.addItem("rug", "It's fairly plush under your feet.")
+                foyer.addItem("door-mat", "It's covered in dirt, I suppose that is its purpose.")
+                foyer.addItem("door", "It's where you came in from, but you shouldn't leave yet.")
+
+                garage.addItem("car", "It's a Dodge Charger.")
+                garage.addItem("truck", "It's a Dodge Ram.")
+                garage.addItem("work-bench", "It has several tools on it, like hammers and wrenches.")
+                garage.addItem("breaker-box", "Contains several switches for controlling the power.")
+                garage.addItem("garage-door", "It seems to be locked tight, not getting out this way.")
+
+                kitchen.addItem("table", "A dining table, with several dishes on it. A ham rests on top of it.")
+                kitchen.addItem("ham", "A smoked ham. A knife rests next to it, perhaps you could cut off a piece.")
+                kitchen.addItem("fridge", "A refrigerator full of boring foods.")
+                kitchen.addItem("oven", "An electric oven, looks like it has been recently used.")
+                kitchen.addItem("stove", "An electric stove.")
+
+                living.addItem("sofa", "A comfy sofa, it sits in front of the fireplace.")
+                living.addItem("fireplace", "A fire burns, it casts a warm glow across the room.")
+                living.addItem("television", "A 32\" flatscreen. A remote rests in front of it.")
+                living.addItem("recliner", "A La-Z-Boy recliner, looks comfortable.")
+                living.addItem("floor-rug", "Covers a large portion of the floor, but I don't care for the color.")
+                living.addItem("dvd-rack", "Has a wide array of movies, one dvd looks more important though.")
+
+                laundry.addItem("washing-machine", "A front loading washing machine with a clear window. Its fun to watch these things sometimes.")
+                laundry.addItem("dryer", "Used for drying clothes. Loud. Less fun to watch than a washing machine.")
+                laundry.addItem("laundry-basket", "Could be used to hold clothes, but the clothes are in the washer already.")
+                laundry.addItem("shelf", "Shelves many items, such as detergent.")
+
+                guest.addItem("bed", "A comfy looking double bed with two pillows.")
+                guest.addItem("dresser", "A dresser with clothes in it and a mirror on top.")
+                guest.addItem("coat-rack", "A lone jacket rests on it, a key sits in the pocket.")
+                guest.addItem("tv", "A small box television, nothing fancy.")
+
+                bed.addItem("bed", "A bed in the bedroom, who would have guessed?")
+                bed.addItem("wardrobe", "Full of clothes.")
+                bed.addItem("ceiling-fan", "Large, spinning, wooden blades for moving the air around.")
+                bed.addItem("desk", "Contains papers and writing utinsils. On the top rests a laptop, but the battery is dead.")
+                bed.addItem("safe", "A locked safe.")
+                bed.addItem("night-stand", "A lamp rests on top, in the drawer is a battery.")
+
+                bath.addItem("toilet", "An uninspired, white, porcelain bowl full of water and [expletive].")
+                bath.addItem("shower", "A shower sounds nice, but God only knows how to operate this thing.")
+                bath.addItem("sink", "It seems to be clogged.")
 
                 #create room grabbables
+                exercise.addGrabbable("boxing-gloves")
+                exercise.addGrabbable("dumbell")
+                exercise.addGrabbable("gatorade")
+
+                garage.addGrabbable("hammer")
+                garage.addGrabbable("wrench")
+
+                kitchen.addGrabbable("knife")
+
+                living.addGrabbable("remote")
+                living.addGrabbable("dvd")
+
+                laundry.addGrabbable("detergent")
+
+                guest.addGrabbable("key")
+
+                bed.addGrabbable("battery")
 
                 #set foyer as current room at beginning of the game
                 Game.currentRoom = foyer
