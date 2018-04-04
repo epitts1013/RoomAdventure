@@ -274,7 +274,8 @@ class Game(Frame):
                 living.addItem("television", "A 32\" flatscreen. A remote rests in front of it.")
                 living.addItem("recliner", "A La-Z-Boy recliner, looks comfortable.")
                 living.addItem("floor-rug", "Covers a large portion of the floor, but I don't care for the color.")
-                living.addItem("dvd-rack", "Has a wide array of movies, one dvd looks more important though.")
+                living.addItem("dvd-rack", "Has a wide array of movies.")
+                living.addItem("hatch", "A hatch is on the ceiling, it has seven keyholes.")
 
                 laundry.addItem("washing-machine", "A front loading washing machine with a clear window. Its fun to watch these things sometimes.")
                 laundry.addItem("dryer", "Used for drying clothes. Loud. Less fun to watch than a washing machine.")
@@ -297,6 +298,8 @@ class Game(Frame):
                 bath.addItem("shower", "A shower sounds nice, but God only knows how to operate this thing.")
                 bath.addItem("sink", "It seems to be clogged.")
 
+                secret.addItem("a-beautiful-view", "A breathtaking view of the night sky, a fitting reward for you hard work. The only thing left is to exit the game.")
+
                 #create room grabbables
                 front.addGrabbable("key")
                 
@@ -310,7 +313,6 @@ class Game(Frame):
                 kitchen.addGrabbable("knife")
 
                 living.addGrabbable("remote")
-                living.addGrabbable("dvd")
 
                 laundry.addGrabbable("detergent")
 
@@ -350,7 +352,7 @@ class Game(Frame):
                                                    "Game.rooms[9].items[\"sink\"] = \"An unclogged sink.\""])
 
                 #set front as current room at beginning of the game
-                Game.currentRoom = foyer
+                Game.currentRoom = front
 
                 #initialize inventory
                 Game.inventory = []
@@ -510,8 +512,23 @@ class Game(Frame):
                                 
                                 #set default response
                                 response = "Can only use items in inventory."
+                                
+                                #checks for using all keys on living room hatch
+                                if ((Game.currentRoom == Game.rooms[5]) and (trigger == "key" or trigger == "keys") and (dObject == "hatch")):
+                                        keyCount = 0
+                                        #checks all items in inventory
+                                        for item in Game.inventory:
+                                                if item == "key":
+                                                        #totals up number of keys
+                                                        keyCount += 1
+                                        #if you have all the keys, opens the hatch, otherwise nothing happens
+                                        if keyCount == 7:
+                                                Game.rooms[5].addExit("hatch", Game.rooms[10])
+                                                response = "Using all seven keys, you open the hatch."
+                                        else:
+                                                response =  "You lack the required number of keys."
                         
-                                if (trigger in Game.inventory):
+                                elif (trigger in Game.inventory):
                                         #set default response
                                         response = "Can't use that item that way."
 
