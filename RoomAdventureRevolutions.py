@@ -20,6 +20,7 @@ class Room(object):
                 self.exits ={}
                 self.items = {}
                 self.grabbables = []
+                self.events = []
 
         #Accessors and Mutators
         #name
@@ -67,6 +68,15 @@ class Room(object):
         def grabbables(self, value):
                 self._grabbables = value
 
+        #events
+        @property
+        def events(self):
+                return self._events
+
+        @events.setter
+        def events(self, val):
+                self._events = val
+
         # adds an exit to the room
         # the exit is a string (e.g., "north")
         # the room is an instance of a room
@@ -93,6 +103,9 @@ class Room(object):
                 # remove the item from the list
                 self._grabbables.remove(item)
 
+        def addEvent(self, trigger, dObject, effect):
+                self.events.append(Event(trigger, dObject, effect))
+
         # returns a string description of the room
         def __str__(self):
                 # first, the room name
@@ -113,14 +126,13 @@ class Room(object):
 
 # the event class
 # serves as a template for [use] events
-# accepts the room, trigger item, item trigger is used on, and a string that will be executed when the event is called
+# accepts trigger item, item trigger is used on, and a string that will be executed when the event is called
 class Event(object):
         #Constructor
-        def __init__(self, location, trigger, dObject, effect):
-              self.location = location #the room the event occurs in
+        def __init__(self, trigger, dObject, effect):
               self.trigger = trigger #item used to trigger event
               self.dObject = dObject #item in room that trigger is used on
-              self.effect = effect #effect of the action written as a string
+              self.effect = effect #effects of the action input as a list of strings
 
         #accessors and mutators
         #location
@@ -183,6 +195,20 @@ class Game(Frame):
                 bath = Room("Bathroom", "bath.gif")
                 secret = Room("Secret Room", "secret.gif")
 
+                #rooms are added to a list for access by events
+                Game.rooms = []
+                Game.rooms.append(front) #index 0
+                Game.rooms.append(exercise) #index 1
+                Game.rooms.append(foyer) #index 2
+                Game.rooms.append(garage) #index 3
+                Game.rooms.append(kitchen) #index 4
+                Game.rooms.append(living) #index 5
+                Game.rooms.append(laundry) #index 6
+                Game.rooms.append(guest) #index 7
+                Game.rooms.append(bed) #index 8
+                Game.rooms.append(bath) #index 9
+                Game.rooms.append(secret) #index 10
+
                 #create room exits
                 exercise.addExit("north", kitchen)
                 exercise.addExit("east", foyer)
@@ -214,6 +240,9 @@ class Game(Frame):
                 bath.addExit("west", bed)
 
                 #create room items
+                front.addItem("door-mat", "Lifting it up reveals a key")
+                front.addItem("door", "The front door. It can't be opened.")
+                
                 exercise.addItem("weight-rack", "A rack with several dumbells of various weights placed on it.")
                 exercise.addItem("treadmill", "A ten speed treadmill with incline controls.")
                 exercise.addItem("elliptical", "Simulates walking up stairs without the high impact.")
@@ -266,6 +295,8 @@ class Game(Frame):
                 bath.addItem("sink", "It seems to be clogged.")
 
                 #create room grabbables
+                front.addGrabbable("key")
+                
                 exercise.addGrabbable("boxing-gloves")
                 exercise.addGrabbable("dumbell")
                 exercise.addGrabbable("gatorade")
@@ -284,8 +315,11 @@ class Game(Frame):
 
                 bed.addGrabbable("battery")
 
-                #set foyer as current room at beginning of the game
-                Game.currentRoom = foyer
+                #create room events
+                front.addEvent("key", "door", ["Game.rooms[0].addExit(\"north\", Game.rooms[2])", "response = \"The door unlocks\""])
+
+                #set front as current room at beginning of the game
+                Game.currentRoom = front
 
                 #initialize inventory
                 Game.inventory = []
@@ -395,7 +429,7 @@ class Game(Frame):
                                 #check for valid exits in current room
                                 if (noun in Game.currentRoom.exits):
                                         #if room found, change currentRoom to specified room
-                                        Game.currentRoom =  Game.currentRoom.exits[noun]
+                                        Game.currentRoom = Game.currentRoom.exits[noun]
                                         #set response if successful
                                         response = "Room changed."
 
@@ -426,6 +460,35 @@ class Game(Frame):
                                                 response = "Item grabbed."
                                                 #no need to check for more grabbables
                                                 break
+                        
+                        #display response on right of GUI
+                        #display room image on left of GUI
+                        #clear input
+                        self.setStatus(response)
+                        self.setRoomImage()
+                        Game.player_input.delete(0, END)
+
+                elif (len(words) == 3):
+                        #check for correct usage
+                        verb = words[0]
+
+                        if (verb == "use"):
+                                #if [use] is verb, proceed
+                                trigger = words[1]
+                                dObject = words[2]
+                                
+                                #set default response
+                                response = "Can only use items in inventory."
+                        
+                                if (trigger in Game.inventory):
+                                        #set default response
+                                        response = "Can't use that item that way."
+
+                                        for event in Game.currentRoom.events:
+                                                if ((trigger == event.trigger) and (dObject == event.dObject)):
+                                                        for string in event.effect:
+                                                                exec(string)
+
                         #display response on right of GUI
                         #display room image on left of GUI
                         #clear input
