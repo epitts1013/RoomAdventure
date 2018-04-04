@@ -257,7 +257,7 @@ class Game(Frame):
                 foyer.addItem("door-mat", "It's covered in dirt, I suppose that is its purpose.")
                 foyer.addItem("door", "It's where you came in from, but you shouldn't leave yet.")
 
-                garage.addItem("car", "It's a Dodge Charger.")
+                garage.addItem("car", "It's a Dodge Charger. You see a key though the window.")
                 garage.addItem("truck", "It's a Dodge Ram.")
                 garage.addItem("work-bench", "It has several tools on it, like hammers and wrenches.")
                 garage.addItem("breaker-box", "Contains several switches for controlling the power.")
@@ -319,10 +319,38 @@ class Game(Frame):
                 bed.addGrabbable("battery")
 
                 #create room events
-                front.addEvent("key", "door", ["Game.rooms[0].addExit(\"north\", Game.rooms[2])", "response = \"The door unlocks\""])
+                front.addEvent("key", "door", ["Game.rooms[0].addExit(\"north\", Game.rooms[2])", "Game.rooms[0].items[\"door\"] = \"The front door\"",\
+                                               "Game.inventory.remove(\"key\")", "response = \"The door unlocks\""])
+
+                exercise.addEvent("dumbell", "scale", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"dumbell\")",\
+                                                       "response = \"Placing the dumbell on the scale opened up a compartment on the scale revealing a key. You take the key.\""])
+
+                garage.addEvent("hammer", "car", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"hammer\")",\
+                                                  "response = \"You use the hammer to smash in the window and take the key. You discard the hammer.\"",\
+                                                  "Game.rooms[3].items[\"car\"] = \"A Dodge Charger with a broken window\""])
+
+                kitchen.addEvent("knife", "ham", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"knife\")",\
+                                                  "response = \"You use the to cut into the ham, but find a key inside it. You discard the knife.\"",\
+                                                  "Game.rooms[4].items[\"ham\"] = \"A smoked ham that has been cut into.\""])
+
+                laundry.addEvent("detergent", "washing-machine", ["Game.inventory.append(\"wet-clothes\")", "Game.inventory.remove(\"detergent\")",\
+                                                                  "response = \"You wash the clothes, but now you have a bunch of wet clothes. You discard the detergent.\""])
+                laundry.addEvent("wet-clothes", "dryer", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"wet-clothes\")",\
+                                                          "response = \"You dry the wet clothes, and inside the laundry you find a key.\""])
+
+                bed.addEvent("battery", "laptop", ["Game.inventory.append(\"combination\")", "Game.inventory.remove(\"battery\")",\
+                                                   "response = \"You could have just as easily have charged the battery, but okay. On the computer you see a combination.\"",\
+                                                   "Game.rooms[8].items[\"desk\"] = \"Contains papers and writing utinsils. On the top rests a laptop.\""])
+                bed.addEvent("combination", "safe", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"combination\")",\
+                                                   "response = \"You open the safe with the combination from the computer. Inside you find a key.\"",\
+                                                   "Game.rooms[8].items[\"safe\"] = \"An unlocked safe\""])
+
+                bath.addEvent("wrench", "sink", ["Game.inventory.append(\"key\")", "Game.inventory.remove(\"wrench\")",\
+                                                   "response = \"You use the wrench to open the pipes, and inside you find a key. You discard the wrench.\"",\
+                                                   "Game.rooms[9].items[\"sink\"] = \"An unclogged sink.\""])
 
                 #set front as current room at beginning of the game
-                Game.currentRoom = front
+                Game.currentRoom = foyer
 
                 #initialize inventory
                 Game.inventory = []
