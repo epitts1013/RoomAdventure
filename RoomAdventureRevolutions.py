@@ -242,6 +242,9 @@ class Game(Frame):
                 #create room items
                 front.addItem("door-mat", "Lifting it up reveals a key")
                 front.addItem("door", "The front door. It can't be opened.")
+                front.addItem("tutorial", "This game makes use of 4 action verbs: go, look, take, and use.\nFor go, look, and take, use the format [verb][noun].\
+                                                \n For \"use\" use the format [use][object to be used][object you are acting on].\
+                                                \nFor example \"use key door\". Items being used must be in player inventory.")
                 
                 exercise.addItem("weight-rack", "A rack with several dumbells of various weights placed on it.")
                 exercise.addItem("treadmill", "A ten speed treadmill with incline controls.")
@@ -400,7 +403,7 @@ class Game(Frame):
                 #set user input to lower case
                 action = action.lower()
                 #set default response
-                response = "I don't understand. Try [verb][noun]. Valid verbs are go, look, and take."
+                response = "I don't understand. Try [verb][noun] for verbs go, look, and take. Try [verb][item to use][item to be used on] for use."
 
                 #exit game if player wants to quit (quit actions are "quit" or "exit"
                 if (action == "quit" or action == "exit"):
